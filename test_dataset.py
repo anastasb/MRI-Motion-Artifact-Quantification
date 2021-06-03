@@ -2,8 +2,7 @@ import torch
 import numpy as np
 from torch.utils.data import Dataset, DataLoader
 import torchio as tio
-import albumentations as alb
-import random
+from utils import normalize
 
 """
 Synthetic Test Dataset generator class

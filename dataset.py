@@ -1,9 +1,10 @@
 import torch
 import numpy as np
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset
 import torchio as tio
+from utils import normalize
 import albumentations as alb
-import random
+import nibabel as nib
 
 """
 PyTorch Dataset generator class to be used in DataLoader
@@ -51,10 +52,13 @@ class Data(Dataset):
         X_depth = X_img1.shape[2]
         pad = (X_depth - DEPTH) // 2
         idx = range(pad, pad + DEPTH)
+        resize = alb.Resize(width=SIZE, height=SIZE, p=1.0)
         X_array = resize(image=np.array(X_array[:, :, idx]))['image']
         X_array2 = resize(image=np.array(X_array2[:, :, idx]))['image']
 
         augment = torch.rand(2)
+        hflip = alb.HorizontalFlip(p=1)
+        vflip = alb.VerticalFlip(p=1)
         if self.type == 'train' and augment[0] > 0.5:
             X_array = hflip(image=X_array)['image']
             X_array2 = hflip(image=X_array2)['image']

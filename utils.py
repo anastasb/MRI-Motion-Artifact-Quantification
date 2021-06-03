@@ -1,3 +1,13 @@
+import GPUtil as GPUtil
+import numpy as np
+import torch as torch
+from networks import Discriminator
+import torch.nn as nn
+import random
+from dataset import Data
+from torch.utils.data import DataLoader
+import os
+
 def train_model(model, train_loader, val_loader, criterion, optimizer,
                 num_epochs=50, lambda_relative=1.0):
     """
@@ -18,7 +28,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer,
         GPUtil.showUtilization()
         model.train()
         losses = []
-
+        device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         for i_step, (data, target) in enumerate(train_loader):
             print(str(i_step) + '...')
             data_base = data[0].half().to(device)
@@ -58,7 +68,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer,
     return loss_history, val_losses
 
 
-def _compute_val(model, loader, lambda_relative = 1.0):
+def _compute_val(model, loader, device, lambda_relative = 1.0):
     """
     Computes validation loss for the Motion Artifact Quantification Model
     :param model: model;
@@ -67,6 +77,7 @@ def _compute_val(model, loader, lambda_relative = 1.0):
     :return: validation loss
     """
     val_loss = 0
+    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     with torch.no_grad():
         for i_step, (data, target) in enumerate(loader):
             data_base = data[0].to(device).half()
@@ -89,11 +100,11 @@ def _compute_val(model, loader, lambda_relative = 1.0):
             if torch.mean(output_base-output_bad)>0:
                 val_loss += torch.mean(output_base-output_bad)*lambda_relative
 
-    return (val_loss) / ((i_step + 1))
+    return (val_loss) / (i_step + 1)
 
 
 def discriminator(degrees1, degrees2, degrees3,
-                  translation1, translation2, translation3,
+                  translation1, translation2, translation3,train_set,
                   num_transforms=1):
     """
     Calculates the discriminator loss for the CNN network differentiating between the real bad
@@ -104,10 +115,10 @@ def discriminator(degrees1, degrees2, degrees3,
     :param translation1: 3D motion translation axis x;
     :param translation2: 3D motion translation axis y;
     :param translation3: 3D motion translation axis z;
+    :param train_set: list of train set image names;
     :param num_transforms: 3D motion, number of moves;
     :return: discriminator loss when differentiating between real bad and simulated bad images
     """
-    set_seed(2018)
     train_dataset = Data(inputs=train_set, rotate=(degrees1, degrees2, degrees3),
                          translate=(translation1, translation2, translation3), number=1)
 
@@ -115,7 +126,7 @@ def discriminator(degrees1, degrees2, degrees3,
     loss_history = []
     model = Discriminator()
     p_net = nn.DataParallel(model, device_ids=[0, 1, 2, 3])
-
+    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     if torch.cuda.is_available():
         p_net.cuda()
 
@@ -153,3 +164,7 @@ def set_seed(seed):
     np.random.seed(seed)
     random.seed(seed)
     os.environ['PYTHONHASHSEED'] = str(seed)
+
+def normalize(img):
+    '''Minmax image normalization'''
+    return (img- torch.min(img))/(torch.max(img)-torch.min(img))

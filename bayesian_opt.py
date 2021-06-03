@@ -1,8 +1,6 @@
+import Events as Events
 from utils import discriminator
 from bayes_opt import BayesianOptimization
-import torch.optim as optim
-import GPUtil
-from bayes_opt.util import load_logs
 from bayes_opt.logger import JSONLogger
 
 def bayes_optimize(bound,path,num_random_points,

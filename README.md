@@ -10,3 +10,4 @@ We further use the obtained parameters to create a simulated motion affected
 train set and build the regression based CNN model with additional ranking loss,
 to quantify the motion effect.
 
+https://user-images.githubusercontent.com/44216377/120604160-9a706280-c401-11eb-9aab-0f6e593fce61.png)

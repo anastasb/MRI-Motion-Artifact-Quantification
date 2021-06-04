@@ -23,7 +23,7 @@ def bayes_optimize(bound,path,num_random_points,
                        kappa=kappa, kappa_decay_delay=kappa_decay_delay,
                        kappa_decay=kappa_decay)
 
-def initialize_grid(optimizer, points = [0,1,2,3]):
+def initialize_grid(optimizer, points):
     for point in points:
         optimizer.probe(params={"degrees1": point, "degrees2": point,
                                 "degrees3": point,"translation1": point,

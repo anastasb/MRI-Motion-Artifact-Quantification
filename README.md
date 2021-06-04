@@ -1,6 +1,7 @@
 # MRI-Motion-Artifact-Quantification
 
 The project aims at quantifying motion artifact in the 3D T1 MRI images.
+
 Step 1: We use motion simulation package specified below to imply the motion parameters of
 the images labeled as bad, by comparing them to the simulated images with  
 the motion parameters of 3D translation and rotation, with the help of Bayesian optimization.

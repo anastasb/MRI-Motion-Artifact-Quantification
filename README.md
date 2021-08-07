@@ -1,6 +1,10 @@
-# MRI-Motion-Artifact-Quantification
+# Adversarial Bayesian Optimization for Quantifying Motion Artifact within MRI  
 
-The project aims at quantifying motion artifact in the 3D T1 MRI images.
+
+The paper ("Adversarial Bayesian Optimization for Quantifying Motion Artifact within MRI", Anastasia Butskova, Rain Juhl, Dzenan Zukic, Aashish Chaudhary,
+Kilian M. Pohl, Qingyu Zhao) has been accepted to the PRIME-MICCAI 2021 workshop.
+
+The paper aims at quantifying motion artifact in the 3D T1 MRI images.
 
 Step 1: We use motion simulation package specified below to imply the motion parameters of
 the images labeled as bad, by comparing them to the simulated images with  

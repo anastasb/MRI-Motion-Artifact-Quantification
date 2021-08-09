@@ -1,8 +1,7 @@
 # Adversarial Bayesian Optimization for Quantifying Motion Artifact within MRI  
 
 
-The paper ("Adversarial Bayesian Optimization for Quantifying Motion Artifact within MRI", Anastasia Butskova, Rain Juhl, Dzenan Zukic, Aashish Chaudhary,
-Kilian M. Pohl, Qingyu Zhao) has been accepted to the PRIME-MICCAI 2021 workshop.
+The paper (A. Butskova, R. Juhl, D. Zukic, A. Chaudhary, K.M. Pohl, **Q. Zhao**, Adversarial Bayesian Optimization for Quantifying Motion Artifact within MRI, 4th Workshop on PRedictive Intelligence in MEdicine (PRIME), 2021) has been accepted to the PRIME-MICCAI 2021 workshop.
 
 The paper aims at quantifying motion artifact in the 3D T1 MRI images.
 
